@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust | <%= place.title %></title>
+</head>
+<body>
+    <p><%= place.title %></p>    
+    <p><%= place.description %></p>    
+    <p><%= place.location %></p>    
+    <p><%= place.country %></p>    
+    <p> ₹ <%= place.price.toLocaleString("en-In") %></p>    
+    <img src="<%=place.image%>" alt="">
+</body>
+</html>

@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing")
-const {data:sampleListing} = require("./SampleListing.js")
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+
+const path = require("path");
+const method_override = require("method-override");
+
+const listingRouter = require("./controllers/listingRoutes.js");
 
 const main = async () => {
   await mongoose.connect(MONGO_URL);
@@ -11,20 +14,26 @@ const main = async () => {
 
 main()
   .then(() => {
-    console.log("Connected to DB")
+    console.log("Connected to DB");
   })
   .catch((err) => {
-    console.log(err)
+    console.log(err);
   });
 
-app.get("/", (req, res) => {
-  Listing.insertMany(sampleListing)
-  // Listing.find().then(res=>{
-  //   console.log(res);
-  // })
-  res.send("It is working");
-});
+app.use(express.static(path.join(__dirname, "public")));
+app.use(method_override("_method"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.listen(3000, () => {
-  console.log("app is listening on port 3000");
+app.use("/listings", listingRouter);
+app.get('/new', async (req, res) => {
+  res.render("newListing")
+})
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+const port = 3003;
+app.listen(port, () => {
+  console.log(`app is listening on port ${port}`);
 });
