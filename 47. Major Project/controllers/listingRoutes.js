@@ -5,23 +5,23 @@ const listingRouter = require("express").Router();
 
 listingRouter.get('/', async (req, res) => {
     const allListings = await Listing.find({});
-    res.render("index", { allListings });
+    res.render("listings/index", { allListings });
 })
 
 listingRouter.post('/', async (req, res) => {
     const newListing = new Listing(req.body)
-    await newListing.save()
+    await newListing.save().then(res=>console.log(res))
     res.redirect("/listings")
 })
 
 listingRouter.get('/:id', async (req, res) => {
     const listing = await Listing.findById(req.params.id);
-    res.render("place", { place:listing });
+    res.render("listings/place", { place:listing });
 })
 
 listingRouter.get('/edit/:id', async (req, res) => {
     const listing = await Listing.findById(req.params.id);
-    res.render("edit", { place:listing });
+    res.render("listings/edit", { place:listing });
 })
 
 listingRouter.patch('/:id', async (req, res) => {

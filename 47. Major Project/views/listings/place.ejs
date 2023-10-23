@@ -1,0 +1,19 @@
+<% layout('./layouts/Boilerplate') %>
+<body>
+    <form action='/listings/edit/<%=place._id%>' method="GET" style="display: inline;">
+        <button class="material-symbols-outlined" style="background: transparent;border: none;font-size: 1em;cursor: pointer;">
+            edit
+        </button>
+    </form>
+    <form action='/listings/<%=place._id%>?_method=DELETE' method="POST" style="display: inline;">
+        <button class="material-symbols-outlined" style="background: transparent;border: none;font-size: 1em;cursor: pointer;">
+            delete
+        </button>
+    </form>
+    <p><%= place.title %></p>    
+    <p><%= place.description %></p>    
+    <p><%= place.location %></p>    
+    <p><%= place.country %></p>    
+    <p> ₹ <%= place.price.toLocaleString("en-In") %></p>    
+    <img src="<%=place.image%>" height="300" width="300" alt="">
+</body>

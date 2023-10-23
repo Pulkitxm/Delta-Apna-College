@@ -1,0 +1,39 @@
+button{
+    background: transparent;
+    border: none;
+}
+
+.card-title,
+.card-text button{
+    text-decoration: none !important;
+}
+
+.navbar{
+    height: 5rem;
+    background-color: #fff;
+}
+
+.f-info{
+    width: 70%;
+    margin: auto;
+    margin-top: 3em;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-top: solid 2px #00000067;
+    height: 5em;
+}
+
+.listings-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.listings-container .card{
+    margin: 1em;
+    border: none;
+}
+
+.listings-container .card img{
+    border-radius: 1em;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Says</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- h1{Simon Says Game - Pulkit}+h2{Press any key to start the game}+(.btn-container>.btn*4) -->
+    <h1>Simon Says Game - Pulkit</h1>
+    <h2>Press any key to start the game</h2>
+    <div>
+        <p class="range" > <label for="difficulty">Easy</label></p>
+        <input type="range" name="difficulty" id="difficulty" min="0" max="60" step="30">
+        <p class="range" > <label for="difficulty">Difficult</label></p>
+    </div>
+    <div class="btn-container">
+        <div class="btn" data-idx="1" >1</div>
+        <div class="btn" data-idx="2" >2</div>
+        <div class="btn" data-idx="3" >3</div>
+        <div class="btn" data-idx="4" >4</div>
+    </div>
+    <script src="script.js" ></script>
+</body>
+</html>

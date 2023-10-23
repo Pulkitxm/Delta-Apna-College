@@ -1,0 +1,25 @@
+<% layout('./layouts/Boilerplate') %>
+<body>
+    <h2>Add a new Listing</h2>
+    <form action="/listings" method="POST" >
+        <label class="form-label" for="title">title</label>
+        <input class="form-control" type="text" value="testTitle" name="title" id="title" placeholder="Enter title" >
+        <br>
+        <label class="form-label" for="description">description</label>
+        <input class="form-control" type="text" value="testDescription" name="description" id="description" placeholder="Enter description" >
+        <br>
+        <label class="form-label" for="image">image</label>
+        <input class="form-control" type="text" value="testImage" name="image" id="image" placeholder="Enter image" >
+        <br>
+        <label class="form-label" for="price">price</label>
+        <input class="form-control" type="text" value="100000" name="price" id="price" placeholder="Enter price" >
+        <br>
+        <label class="form-label" for="location">location</label>
+        <input class="form-control" type="text" value="testLocation" name="location" id="location" placeholder="Enter location" >
+        <br>
+        <label class="form-label" for="country">country</label>
+        <input class="form-control" type="text" value="testCountry" name="country" id="country" placeholder="Enter country" >
+        <br>
+        <button class="btn btn-primary" >Add</button>
+    </form>
+</body>
