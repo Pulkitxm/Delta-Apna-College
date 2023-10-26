@@ -1,3 +1,22 @@
+.card .img{
+    border-radius: 1em;
+    overflow: hidden;
+}
+
+.listings-container .card{
+    border: none;
+}
+
+.card .img img{
+    cursor: pointer;
+    transition: .6s;
+}
+
+.card:hover .img img{
+    transition: .2s;
+    transform: scale(1.1);
+}
+
 button{
     background: transparent;
     border: none;
@@ -31,9 +50,4 @@ button{
 
 .listings-container .card{
     margin: 1em;
-    border: none;
-}
-
-.listings-container .card img{
-    border-radius: 1em;
 }

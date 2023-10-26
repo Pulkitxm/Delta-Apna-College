@@ -1,19 +1,66 @@
 <% layout('./layouts/Boilerplate') %>
 <body>
-    <form action='/listings/edit/<%=place._id%>' method="GET" style="display: inline;">
-        <button class="material-symbols-outlined" style="background: transparent;border: none;font-size: 1em;cursor: pointer;">
-            edit
+  <div class="card container" style="width: 35rem">
+    <div class="card-header">
+        <h2>
+            <%= place.title %>
+        </h2>
+    </div>
+    <div class="img">
+      <img src="<%=place.image%>" class="card-img-top" height="380px" alt="..." />
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        <%= place.description %>
+      </p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Location: <%= place.location %></li>
+      <li class="list-group-item">Country: <%= place.country %></li>
+      <li class="list-group-item">Price: ₹ <%= place.price.toLocaleString("en-In") %></li>
+    </ul>
+    <div class="card-footer text-body-secondary d-flex justify-content-end">
+      <form
+        action="/listings/edit/<%=place._id%>"
+        method="GET"
+        style="display: inline"
+      >
+        <button
+          class="material-symbols-outlined"
+          style="
+            background: transparent;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+          "
+        >
+          edit
         </button>
-    </form>
-    <form action='/listings/<%=place._id%>?_method=DELETE' method="POST" style="display: inline;">
-        <button class="material-symbols-outlined" style="background: transparent;border: none;font-size: 1em;cursor: pointer;">
-            delete
+      </form>
+      <form
+        action="/listings/<%=place._id%>?_method=DELETE"
+        method="POST"
+        style="display: inline"
+      >
+        <button
+          class="material-symbols-outlined"
+          style="
+            background: transparent;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+          "
+        >
+          delete
         </button>
-    </form>
-    <p><%= place.title %></p>    
-    <p><%= place.description %></p>    
-    <p><%= place.location %></p>    
-    <p><%= place.country %></p>    
-    <p> ₹ <%= place.price.toLocaleString("en-In") %></p>    
-    <img src="<%=place.image%>" height="300" width="300" alt="">
+      </form>
+    </div>
+  </div>
+
+  <!-- <p><%=  %></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p>₹ <%= place.price.toLocaleString("en-In") %></p>
+  <img src="<%=place.image%>" height="300" width="300" alt="" /> -->
 </body>
