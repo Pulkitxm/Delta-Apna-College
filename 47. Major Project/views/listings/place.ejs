@@ -25,34 +25,14 @@
         method="GET"
         style="display: inline"
       >
-        <button
-          class="material-symbols-outlined"
-          style="
-            background: transparent;
-            border: none;
-            font-size: 1em;
-            cursor: pointer;
-          "
-        >
-          edit
-        </button>
+        <button class="btn btn-info m-1">Edit</button>
       </form>
       <form
         action="/listings/<%=place._id%>?_method=DELETE"
         method="POST"
         style="display: inline"
       >
-        <button
-          class="material-symbols-outlined"
-          style="
-            background: transparent;
-            border: none;
-            font-size: 1em;
-            cursor: pointer;
-          "
-        >
-          delete
-        </button>
+        <button class="btn btn-danger m-1">Delete</button>
       </form>
     </div>
   </div>

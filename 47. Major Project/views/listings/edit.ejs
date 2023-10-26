@@ -2,7 +2,7 @@
 <body>
   <div class="container">
     <h2>Update <%=place.title%></h2>
-    <form action="/listings/<%=place.id%>?_method=PATCH" method="POST">
+    <form action="/listings/<%=place.id%>?_method=PATCH" method="POST" novalidate class="needs-validation">
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -12,7 +12,11 @@
           name="title"
           id="title"
           placeholder="Enter title"
-        />
+          required
+          />
+          <div class="invalid-feedback">
+            Invalid Title!
+          </div>
       </div>
 
       <div class="mb-3">
@@ -24,7 +28,11 @@
           name="description"
           id="description"
           placeholder="Enter description"
-        />
+          required
+          />
+          <div class="invalid-feedback">
+            Invalid Description!
+          </div>
       </div>
 
       <div class="mb-3">
@@ -36,7 +44,11 @@
           name="image"
           id="image"
           placeholder="Enter image"
-        />
+          required
+          />
+          <div class="invalid-feedback">
+            Invalid Image!
+          </div>
       </div>
 
      <div class="row">
@@ -49,7 +61,11 @@
           name="price"
           id="price"
           placeholder="Enter price"
-        />
+          required
+          />
+          <div class="invalid-feedback">
+            Invalid Price!
+          </div>
       </div>
 
       <div class="mb-3 col-md-6">
@@ -61,7 +77,11 @@
           name="location"
           id="location"
           placeholder="Enter location"
-        />
+          required
+          />
+          <div class="invalid-feedback">
+            Invalid Location!
+          </div>
       </div>
      </div>
 
@@ -74,7 +94,11 @@
           name="country"
           id="country"
           placeholder="Enter country"
-        />
+          required
+          />
+          <div class="invalid-feedback">
+            Invalid Country!
+          </div>
       </div>
       <div class="d-flex justify-content-center">
         <button class="btn btn-primary " >UPDATE</button>

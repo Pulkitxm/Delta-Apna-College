@@ -9,11 +9,11 @@
 
 .card .img img{
     cursor: pointer;
-    transition: .6s;
+    transition: 1s;
 }
 
 .card:hover .img img{
-    transition: .2s;
+    transition: .5s;
     transform: scale(1.1);
 }
 
