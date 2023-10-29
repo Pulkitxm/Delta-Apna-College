@@ -7,6 +7,9 @@ const path = require("path");
 const method_override = require("method-override");
 
 const listingRouter = require("./controllers/listingRoutes.js");
+morgan = require('morgan')
+
+const ExpressError = require("./utils/ExpressErrors.js")
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -28,19 +31,25 @@ main()
     console.log(err);
   });
 
-
-app.use((req, res, next) => {
-  const clientIP =
-    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-  console.log(clientIP);
-  next();
-});
-
+app.use(morgan(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms'
+  ].join(' ')
+}))
 
 app.use("/listings", listingRouter);
-app.get('/new', async (req, res) => {
-  res.render("listings/newListing")
+app.all("*",(req,res,next)=>{
+  next(new ExpressError(404,"Page Not Found"));
 })
+
+app.use((err,req,res,next)=>{
+  let {statusCode=500, message="Some Error Occured"} = err;
+  res.status(statusCode).render("error",{err});
+});
 
 const port = 3003;
 app.listen(port, () => {
