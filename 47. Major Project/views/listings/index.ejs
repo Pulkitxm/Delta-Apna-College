@@ -3,7 +3,7 @@
     <h2 class="text-center" >All Places</h2>
     <div class="listings-container">
         <% allListings.forEach(place=>{ %>
-            <a href="/listings/<%=place._id%>" style="text-decoration: none;" >
+            <a href="/<%=place._id%>" style="text-decoration: none;" >
                 <div class="card" style="width: 25rem;">
                    <div class="img">
                      <img src="<%=place.image%>" class="card-img-top" alt="<%=place.title%>" height="400" >

@@ -1,46 +1,194 @@
 <% layout('./layouts/Boilerplate') %>
 <body>
-  <div class="card container" style="width: 35rem">
+  <div class="card container my-3 p-3" style="width: 35rem">
     <div class="card-header">
-        <h2>
-            <%= place.title %>
-        </h2>
+      <h2><%= place.title %></h2>
     </div>
     <div class="img">
-      <img src="<%=place.image%>" class="card-img-top" height="380px" alt="..." />
+      <img
+        src="<%=place.image%>"
+        class="card-img-top"
+        height="380px"
+        alt="..."
+      />
     </div>
     <div class="card-body">
-      <p class="card-text">
-        <%= place.description %>
-      </p>
+      <p class="card-text"><%= place.description %></p>
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item">Location: <%= place.location %></li>
       <li class="list-group-item">Country: <%= place.country %></li>
-      <li class="list-group-item">Price: ₹ <%= place.price.toLocaleString("en-In") %></li>
+      <li class="list-group-item">
+        Price: ₹ <%= place.price.toLocaleString("en-In") %>
+      </li>
     </ul>
     <div class="card-footer text-body-secondary d-flex justify-content-end">
       <form
-        action="/listings/edit/<%=place._id%>"
+        action="/edit/<%=place._id%>"
         method="GET"
         style="display: inline"
       >
         <button class="btn btn-info m-1">Edit</button>
       </form>
       <form
-        action="/listings/<%=place._id%>?_method=DELETE"
+        action="/<%=place._id%>?_method=DELETE"
         method="POST"
         style="display: inline"
       >
         <button class="btn btn-danger m-1">Delete</button>
       </form>
     </div>
-  </div>
+    <div class="card-footer text-body-secondary">
+      <h4>Leave a Review</h4>
+      <form
+        action="/listings/<%=place._id%>/reviews"
+        method="POST"
+        class="d-inline needs-validation"
+        novalidate
+      >
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            required
+            name="rating"
+            value="1"
+            id="btnradio1"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="btnradio1">&#9734;</label>
+          <input
+            type="radio"
+            class="btn-check"
+            required
+            name="rating"
+            value="2"
+            id="btnradio2"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="btnradio2">&#9734;</label>
+          <input
+            type="radio"
+            class="btn-check"
+            required
+            name="rating"
+            value="3"
+            id="btnradio3"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="btnradio3">&#9734;</label>
+          <input
+            type="radio"
+            class="btn-check"
+            required
+            name="rating"
+            value="4"
+            id="btnradio4"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="btnradio4">&#9734;</label>
+          <input
+            type="radio"
+            class="btn-check"
+            required
+            name="rating"
+            value="5"
+            id="btnradio5"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="btnradio5">&#9734;</label>
+          <div class="invalid-feedback">
+            Please Select a rating to submit the Review
+          </div>
+        </div>
+        <textarea
+          class="form-control my-2"
+          name="comment"
+          placeholder="Enter a review"
+          aria-label="Review"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please Enter some Review</div>
+        <button type="submit" class="btn btn-info m-1 mt-2 mb-3">Submit</button>
+      </form>
 
-  <!-- <p><%=  %></p>
-  <p></p>
-  <p></p>
-  <p></p>
-  <p>₹ <%= place.price.toLocaleString("en-In") %></p>
-  <img src="<%=place.image%>" height="300" width="300" alt="" /> -->
+      <div class="row d-flex justify-content-center align-items-center">
+        <div
+          class="my-2 col-5"
+          style="
+            min-height: 8em;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          <h2 class="text-center" style="text-align: center">
+            <%if(netRating){%>
+            <%=netRating%>
+            <%}else{%>
+              No Rating
+            <%}%>
+          </h2>
+        </div>
+        <% if(place.reviews.length > 0) { %>
+            <div class="card my-2 col-5" style="min-height: 8em; margin: auto;">
+              <div class="card-body text-success d-flex flex-column my-0 justify-content-between">
+                <p style="display: flex; align-items: center; justify-content: center;align-self: center;justify-self: center;">
+                  <%= place.reviews[0].comment %>
+                </p>
+                <div class="d-flex justify-content-between p-1">
+                  <p class="d-inline p-0"><%= place.reviews[0].rating %>★</p>
+                  <form action="/listings/<%= place._id %>/reviews/<%= place.reviews[0]._id %>?_method=DELETE" method="POST" style="display: inline;">
+                    <button class="d-inline deleteBtn">
+                      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="30px" width="30px">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path fill="none" d="M0 0h24v24H0V0z"></path>
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"></path>
+                      </svg>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <% if (place.reviews.length > 0) { %>
+              <% for (let i = 1; i < place.reviews.length; i++) { %>
+                <div class="card my-2 col-5" style="min-height: 8em; margin: auto;">
+                  <div class="card-body text-success d-flex flex-column my-0 justify-content-between">
+                    <p style="display: flex; align-items: center; justify-content: center; align-self: center; justify-self: center;">
+                      <%= place.reviews[i].comment %>
+                    </p>
+                    <div class="d-flex justify-content-between p-1">
+                      <p class="d-inline p-0"><%= place.reviews[i].rating %>★</p>
+                      <form action="/listings/<%= place._id %>/reviews/<%= place.reviews[i]._id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button class="d-inline deleteBtn">
+                          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="30px" width="30px">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path fill="none" d="M0 0h24v24H0V0z"></path>
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"></path>
+                          </svg>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            <% } else { %>
+              Be the first one to review
+            <% } %>
+            
+            <% if(place.reviews.length % 2 === 0) { %>
+              <div class="card my-2 col-5" style="min-height: 8em; margin: auto;"></div>
+            <% } %>
+        <% } else { %>
+          Be the first one to review
+        <% } %>
+        
+      </div>
+    </div>
+  </div>
 </body>

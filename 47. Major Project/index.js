@@ -9,7 +9,9 @@ const method_override = require("method-override");
 const listingRouter = require("./controllers/listingRoutes.js");
 morgan = require('morgan')
 
-const ExpressError = require("./utils/ExpressErrors.js")
+const ExpressError = require("./utils/ExpressErrors.js");
+const wrapAsync = require("./utils/wrapAsync.js");
+const Listing = require("./models/listing.js");
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -41,7 +43,8 @@ app.use(morgan(function (tokens, req, res) {
   ].join(' ')
 }))
 
-app.use("/listings", listingRouter);
+app.use("/", listingRouter);
+
 app.all("*",(req,res,next)=>{
   next(new ExpressError(404,"Page Not Found"));
 })
