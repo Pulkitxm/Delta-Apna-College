@@ -7,6 +7,7 @@ const path = require("path");
 const method_override = require("method-override");
 
 const listingRouter = require("./controllers/listingRoutes.js");
+const reviewRouter = require("./controllers/reviewRouter");
 morgan = require('morgan')
 
 const ExpressError = require("./utils/ExpressErrors.js");
@@ -44,6 +45,7 @@ app.use(morgan(function (tokens, req, res) {
 }))
 
 app.use("/", listingRouter);
+app.use("/", reviewRouter);
 
 app.all("*",(req,res,next)=>{
   next(new ExpressError(404,"Page Not Found"));
