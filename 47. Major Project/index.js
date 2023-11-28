@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -5,14 +6,23 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const ejsMate = require('ejs-mate')
 const path = require("path");
 const method_override = require("method-override");
+const morgan = require('morgan')
+const session = require('express-session')
 
 const listingRouter = require("./controllers/listingRoutes.js");
 const reviewRouter = require("./controllers/reviewRouter");
-morgan = require('morgan')
-
 const ExpressError = require("./utils/ExpressErrors.js");
-const wrapAsync = require("./utils/wrapAsync.js");
-const Listing = require("./models/listing.js");
+
+const sessionOptions = {
+  secret: process.env.sessionSecret,
+  resve: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now()+7*24*60*60*1000, 
+    maxAge: 7 * 24 * 60 * 60 * 1000, 
+    http:true
+  }
+};
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -21,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate)
+app.use(session(sessionOptions))
 
 const main = async () => {
   await mongoose.connect(MONGO_URL);
@@ -56,7 +67,6 @@ app.use((err,req,res,next)=>{
   res.status(statusCode).render("error",{err});
 });
 
-const port = 3003;
-app.listen(port, () => {
-  console.log(`app is listening on port ${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`app is listening on port ${process.env.PORT}`);
 });
