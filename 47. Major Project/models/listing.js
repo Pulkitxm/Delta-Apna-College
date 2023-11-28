@@ -26,7 +26,6 @@ const listingSchema = new Schema({
 })
 
 listingSchema.post("findOneAndDelete",async(listing)=>{
-    console.log("middleware called",listing);
     if(listing){
         await Review.deleteMany({_id : { $in : listing.reviews } })
     }

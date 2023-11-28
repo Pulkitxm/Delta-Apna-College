@@ -51,7 +51,16 @@ reviewRouter.delete(
     await Listing.findByIdAndUpdate(listingId, {
       $pull: { reviews: reviewId },
     });
-    await Review.findByIdAndDelete(reviewId);
+    await Review.findByIdAndDelete(reviewId)
+      .then((res) => {
+        req.flash("success", {
+          msg:`'${res.comment}' Review Deleted Successfully`,
+          type:'delete'
+        });
+      })
+      .catch((err) => {
+        req.flash("failure", err);
+      });
     res.redirect(`/${listingId}`);
   })
 );
@@ -72,7 +81,17 @@ reviewRouter.post(
       $set: { reviews: updatedReviews },
     });
     newReview.listing = newObj._id;
-    await newReview.save();
+    await newReview
+      .save()
+      .then((res) => {
+        req.flash("success", {
+          msg:`'${res.comment}' Review Added Successfully`,
+          type:"normal"
+        });
+      })
+      .catch((err) => {
+        req.flash("failure", err);
+      });
     res.redirect(`/${id}`);
   })
 );

@@ -8,6 +8,7 @@ const path = require("path");
 const method_override = require("method-override");
 const morgan = require('morgan')
 const session = require('express-session')
+const connectFlash = require('connect-flash')
 
 const listingRouter = require("./controllers/listingRoutes.js");
 const reviewRouter = require("./controllers/reviewRouter");
@@ -15,7 +16,7 @@ const ExpressError = require("./utils/ExpressErrors.js");
 
 const sessionOptions = {
   secret: process.env.sessionSecret,
-  resve: false,
+  resave: false,
   saveUninitialized: true,
   cookie: {
     expires: Date.now()+7*24*60*60*1000, 
@@ -32,6 +33,7 @@ app.use(express.json());
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate)
 app.use(session(sessionOptions))
+app.use(connectFlash())
 
 const main = async () => {
   await mongoose.connect(MONGO_URL);
@@ -54,6 +56,13 @@ app.use(morgan(function (tokens, req, res) {
     tokens['response-time'](req, res), 'ms'
   ].join(' ')
 }))
+
+app.use((req,res,next) => {
+  res.locals.success = req.flash("success");
+  res.locals.failure = req.flash("failure");
+  console.log("failure",res.locals.failure);
+  next();
+});
 
 app.use("/", listingRouter);
 app.use("/", reviewRouter);
