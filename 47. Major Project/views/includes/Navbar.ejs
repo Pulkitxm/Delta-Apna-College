@@ -1,19 +1,12 @@
-<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top px-5">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg border-bottom sticky-top ">
+  <div class="container-fluid px-5" style="background-color: #fff;width: 100vw;">
     <a class="navbar-brand d-flex justify-content-center align-items-center" href="/">
-      <span class="material-symbols-outlined" style="color: red;transform: scale(1.5);" >
+      <span class="material-symbols-outlined" style="color: red;transform: scale(1.5);">
         explore
       </span>
     </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -25,6 +18,20 @@
           <a class="nav-link" href="/addnew/new">Add</a>
         </li>
       </ul>
+      <% if(!isLoggedin){ %>
+        <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+          Login
+        </button>
+        or
+        <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
+          Register
+        </button>
+        <% }else{ %>
+          <button class="btn btn-danger m-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">
+            logout
+          </button>
+          <% } %>
     </div>
+  </div>
   </div>
 </nav>

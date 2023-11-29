@@ -1,11 +1,11 @@
-<% if (success && success.length){ %>
-    <div class="alert alert-<%= success[0].type == 'delete' ? "danger" : "success" %> alert-dismissible fade show position-fixed z-1000 bottom-0" style="right: 1em;" role="alert">
-        <h5><%= success[0].msg %></h5>
+<% if (success.length){ %>
+    <div class="alert alert-success alert-dismissible fade show position-fixed z-1000 bottom-0" style="right: 1em;" role="alert">
+        <h5><%= success[0]%></h5>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<% }if (failure && failure.length){ %>
-    <div class="alert alert-warning alert-dismissible fade show position-fixed z-1000 bottom-0" style="right: 1em;" role="alert">
-        <h5><%= failure[0].msg %></h5>
+<% }if (failure.length){ %>
+    <div class="alert alert-danger alert-dismissible fade show position-fixed z-1000 bottom-0" style="right: 1em;" role="alert">
+        <h5><%= failure[0] %></h5>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <% } %>

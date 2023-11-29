@@ -1,0 +1,37 @@
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1" >
+  <form action="/listings/user?_method=patch" method="POST" novalidate class="needs-validation" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="recipient-name-1" class="col-form-label">Username:</label>
+              <input type="text" name="username" class="form-control" id="recipient-name-1" value="pulkit" required>
+              <div class="invalid-feedback">
+                Invalid Username!
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="message-text-1" class="col-form-label">Password:</label>
+              <input class="form-control" name="password" type="password"  id="message-text-1" value="pulkit" required></input>
+              <div class="invalid-feedback">
+                this is a required field!
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
+            Register instead?
+          </button>
+          <button type="submit" class="btn btn-success">Login</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

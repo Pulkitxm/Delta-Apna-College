@@ -16,3 +16,21 @@
     }, false)
   })
 })()
+
+const params = new URLSearchParams(window.location.search);
+
+const startLoginParam = params.get("startlogin");
+const startRegisterParam = params.get("startregister");
+
+const loginModal = document.getElementById("exampleModalToggle");
+const registerModal = document.getElementById("exampleModalToggle2");
+
+if (startLoginParam === "true") {
+  const bootstrapModal = new bootstrap.Modal(loginModal);
+  bootstrapModal.show();
+}
+
+if (startRegisterParam === "true") {
+  const bootstrapModal = new bootstrap.Modal(registerModal);
+  bootstrapModal.show();
+}

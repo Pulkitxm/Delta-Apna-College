@@ -2,16 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-const ejsMate = require('ejs-mate')
+const ejsMate = require("ejs-mate");
 const path = require("path");
 const method_override = require("method-override");
-const morgan = require('morgan')
-const session = require('express-session')
-const connectFlash = require('connect-flash')
+const morgan = require("morgan");
+const session = require("express-session");
+const connectFlash = require("connect-flash");
 
 const listingRouter = require("./controllers/listingRoutes.js");
 const reviewRouter = require("./controllers/reviewRouter");
+const userRouter = require("./controllers/userRouter");
 const ExpressError = require("./utils/ExpressErrors.js");
 
 const sessionOptions = {
@@ -19,10 +19,10 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now()+7*24*60*60*1000, 
-    maxAge: 7 * 24 * 60 * 60 * 1000, 
-    http:true
-  }
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    http: true,
+  },
 };
 
 app.set("views", path.join(__dirname, "views"));
@@ -31,12 +31,12 @@ app.use(method_override("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.set("view engine", "ejs");
-app.engine("ejs", ejsMate)
-app.use(session(sessionOptions))
-app.use(connectFlash())
+app.engine("ejs", ejsMate);
+app.use(session(sessionOptions));
+app.use(connectFlash());
 
 const main = async () => {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(process.env.MONGO_URI);
 };
 
 main()
@@ -47,33 +47,40 @@ main()
     console.log(err);
   });
 
-app.use(morgan(function (tokens, req, res) {
-  return [
-    tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms'
-  ].join(' ')
-}))
+app.use(
+  morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, "content-length"),
+      "-",
+      tokens["response-time"](req, res),
+      "ms",
+    ].join(" ");
+  })
+);
 
-app.use((req,res,next) => {
+app.use((req, res, next) => {
   res.locals.success = req.flash("success");
-  res.locals.failure = req.flash("failure");
-  console.log("failure",res.locals.failure);
+  res.locals.failure = req.flash("error") || req.flash("error");
+  res.locals.isLoggedin = !!req.session.token;
+  res.locals.login = req.query.startlogin;
+  res.locals.register = req.query.startRegister;
   next();
 });
 
 app.use("/", listingRouter);
 app.use("/", reviewRouter);
+app.use("/listings/user", userRouter);
 
-app.all("*",(req,res,next)=>{
-  next(new ExpressError(404,"Page Not Found"));
-})
+app.all("*", (req, res, next) => {
+  next(new ExpressError(404, "Page Not Found"));
+});
 
-app.use((err,req,res,next)=>{
-  let {statusCode=500, message="Some Error Occured"} = err;
-  res.status(statusCode).render("error",{err});
+app.use((err, req, res, next) => {
+  let { statusCode = 500, message = "Some Error Occured" } = err;
+  res.status(statusCode).render("error", { err });
 });
 
 app.listen(process.env.PORT, () => {

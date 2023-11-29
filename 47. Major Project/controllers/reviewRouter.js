@@ -6,45 +6,22 @@ const ExpressError = require("../utils/ExpressErrors");
 const reviewRouter = require("express").Router();
 const { reviewSchema } = require("../Schema.js");
 
+const checkAndHanldeNotLoggedIn = require("../utils/module.js");
+
 const validaterReview = (req, res, next) => {
   let review = req.body;
-  console.log({...review,rating:parseInt(review.rating)});
-  const result = reviewSchema.validate({review:{...review,rating:parseInt(review.rating)}});
+  const result = reviewSchema.validate({
+    review: { ...review, rating: parseInt(review.rating) },
+  });
   if (result.error) {
     throw new ExpressError(400, result.error);
   }
 };
 
-reviewRouter.get(
-  "/listings/reviews/all",
-  wrapAsync(async (req, res) => {
-    const id = req.params.id;
-    const data = await Review.find({});
-    res.send(data);
-  })
-);
-
-reviewRouter.get(
-  "/listings/:listingId/reviews",
-  wrapAsync(async (req, res) => {
-    const listingId = req.params.listingId;
-    const data = await Review.find({ listing: listingId });
-    res.send(data);
-  })
-);
-
-reviewRouter.get(
-  "/listings/:listingId/reviews/:reviewId",
-  wrapAsync(async (req, res) => {
-    const { listingId, reviewId } = req.params;
-    const data = await Review.find({ listing: listingId });
-    res.send(data.filter((i) => i._id == reviewId));
-  })
-);
-
 reviewRouter.delete(
   "/listings/:listingId/reviews/:reviewId",
   wrapAsync(async (req, res) => {
+    if(checkAndHanldeNotLoggedIn(req,res,`You must be logged to add a review`)) return;
     const { reviewId, listingId } = req.params;
     const data = await Review.find({ listing: listingId });
     // await Listing.findByIdAndUpdate(listingId,{reviews:data.filter(i=>i._id != reviewId)});
@@ -53,13 +30,10 @@ reviewRouter.delete(
     });
     await Review.findByIdAndDelete(reviewId)
       .then((res) => {
-        req.flash("success", {
-          msg:`'${res.comment}' Review Deleted Successfully`,
-          type:'delete'
-        });
+        req.flash("success", `'${res.comment}' Review Deleted Successfully`);
       })
       .catch((err) => {
-        req.flash("failure", err);
+        req.flash("error", err);
       });
     res.redirect(`/${listingId}`);
   })
@@ -67,8 +41,9 @@ reviewRouter.delete(
 
 reviewRouter.post(
   "/listings/:id/reviews",
-//   validaterReview,
+  //   validaterReview,
   wrapAsync(async (req, res) => {
+    if(checkAndHanldeNotLoggedIn(req,res,`You must be logged to add a review`)) return;
     const id = req.params.id;
     const newReview = new Review({
       ...req.body,
@@ -84,13 +59,10 @@ reviewRouter.post(
     await newReview
       .save()
       .then((res) => {
-        req.flash("success", {
-          msg:`'${res.comment}' Review Added Successfully`,
-          type:"normal"
-        });
+        req.flash("success", `'${res.comment}' Review Added Successfully`);
       })
       .catch((err) => {
-        req.flash("failure", err);
+        req.flash("error", err);
       });
     res.redirect(`/${id}`);
   })
