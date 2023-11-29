@@ -6,7 +6,7 @@ const ExpressError = require("../utils/ExpressErrors");
 const reviewRouter = require("express").Router();
 const { reviewSchema } = require("../Schema.js");
 
-const checkAndHanldeNotLoggedIn = require("../utils/module.js");
+const {checkAndHanldeNotLoggedIn} = require("../utils/module.js");
 
 const validaterReview = (req, res, next) => {
   let review = req.body;
@@ -21,20 +21,25 @@ const validaterReview = (req, res, next) => {
 reviewRouter.delete(
   "/listings/:listingId/reviews/:reviewId",
   wrapAsync(async (req, res) => {
-    if(checkAndHanldeNotLoggedIn(req,res,`You must be logged to add a review`)) return;
+    if(checkAndHanldeNotLoggedIn(req,res,`You must be logged to delete a review`)) return;
     const { reviewId, listingId } = req.params;
     const data = await Review.find({ listing: listingId });
-    // await Listing.findByIdAndUpdate(listingId,{reviews:data.filter(i=>i._id != reviewId)});
-    await Listing.findByIdAndUpdate(listingId, {
-      $pull: { reviews: reviewId },
-    });
-    await Review.findByIdAndDelete(reviewId)
-      .then((res) => {
-        req.flash("success", `'${res.comment}' Review Deleted Successfully`);
-      })
-      .catch((err) => {
-        req.flash("error", err);
+    console.log("review to be deleted", data);
+    
+    if (res.locals.token && data.isOwner) { 
+      await Listing.findByIdAndUpdate(listingId, {
+        $pull: { reviews: reviewId },
       });
+      await Review.findByIdAndDelete(reviewId)
+        .then((res) => {
+          req.flash("success", `'${res.comment}' Review Deleted Successfully`);
+        })
+        .catch((err) => {
+          req.flash("error", err);
+        });
+    } else {
+      req.flash("error", `You are not authorized to delete this review`);
+    }
     res.redirect(`/${listingId}`);
   })
 );

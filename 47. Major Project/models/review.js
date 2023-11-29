@@ -15,6 +15,10 @@ const reviewSchema = new Schema({
     listing:{
         type:Schema.Types.ObjectId,
         ref:"Listing"
+    },
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
     }
 })
 

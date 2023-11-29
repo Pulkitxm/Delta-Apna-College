@@ -65,8 +65,10 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.failure = req.flash("error") || req.flash("error");
   res.locals.isLoggedin = !!req.session.token;
+  res.locals.token = req.session.token;
   res.locals.login = req.query.startlogin;
   res.locals.register = req.query.startRegister;
+  res.locals.isAuthorizedToEdit = false;
   next();
 });
 

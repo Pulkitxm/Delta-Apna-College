@@ -37,9 +37,13 @@ const handleLogin = async (req, username, password) => {
   const saltedPass = saltPass(password);
   const isPassCorrect = await bcrypt.compare(saltedPass, user.password);
   if (isPassCorrect) {
-    const token = jwt.sign({ username, id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: 24 * 60 * 60 * 1000,
-    });
+    const token = jwt.sign(
+      { username, email: user.email, id: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 24 * 60 * 60 * 1000,
+      }
+    );
     return token;
   } else {
     return false;
@@ -58,6 +62,25 @@ userRouter.post(
       await registerUser(username, email, password, req);
 
       //automatic sign in
+      const token = await handleLogin(req, username, password, email);
+      if (!token) req.flash("error", "Invalid Password!");
+      else {
+        req.flash("success", `Welcome ${username} to Wanderlust!`);
+        req.session.token = token;
+      }
+      res.redirect(req.get("Referer"));
+    }
+  })
+);
+
+userRouter.patch(
+  "/",
+  wrapAsync(async (req, res) => {
+    const { username, password } = req.body;
+    if (!(await alreadyExistsUser(username, password))) {
+      req.flash("error", "Invalid Username!");
+      res.redirect("/");
+    } else {
       const token = await handleLogin(req, username, password);
       if (!token) req.flash("error", "Invalid Password!");
       else {
@@ -69,30 +92,17 @@ userRouter.post(
   })
 );
 
-userRouter.patch("/", async (req, res) => {
-  const { username, password } = req.body;
-  if (!(await alreadyExistsUser(username, password))) {
-    req.flash("error", "Invalid Username!");
-    res.redirect("/");
-  } else {
-    const token = await handleLogin(req, username, password);
-    if (!token) req.flash("error", "Invalid Password!");
-    else {
-      req.flash("success", `Welcome ${username} to Wanderlust!`);
-      req.session.token = token;
-    }
-    res.redirect(req.get("Referer"));
-  }
-});
-
-userRouter.delete("/", async (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Error destroying session:", err);
-    } else {
-      res.redirect(req.get("Referer"));
-    }
-  });
-});
+userRouter.delete(
+  "/",
+  wrapAsync(async (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+      } else {
+        res.redirect(req.get("Referer"));
+      }
+    });
+  })
+);
 
 module.exports = userRouter;

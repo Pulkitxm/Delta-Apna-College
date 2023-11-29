@@ -23,6 +23,7 @@
         Price: ₹ <%= place.price.toLocaleString("en-In") %>
       </li>
     </ul>
+    <%if(isAuthorizedToEdit){%>
     <div class="card-footer text-body-secondary d-flex justify-content-end">
       <form action="/edit/<%=place._id%>" method="GET" style="display: inline">
         <button class="btn btn-info m-1">Edit</button>
@@ -35,6 +36,7 @@
         <button class="btn btn-danger m-1">Delete</button>
       </form>
     </div>
+    <%}%>
     <div class="card-footer text-body-secondary">
       <h4>Leave a Review</h4>
       <%if(isLoggedin){%>
@@ -114,14 +116,22 @@
         <button type="submit" class="btn btn-info m-1 mt-2 mb-3">Submit</button>
       </form>
       <%}else{%>
-        <h3 class="my-3" style="color: red">Login to leave a review</h3>
-        <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
-            Login
-        </button>
-          or
-        <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
-            Register
-        </button>
+      <h3 class="my-3" style="color: red">Login to leave a review</h3>
+      <button
+        class="btn btn-primary m-2"
+        data-bs-target="#exampleModalToggle"
+        data-bs-toggle="modal"
+      >
+        Login
+      </button>
+      or
+      <button
+        class="btn btn-primary m-2"
+        data-bs-target="#exampleModalToggle2"
+        data-bs-toggle="modal"
+      >
+        Register
+      </button>
       <%}%>
 
       <div class="row d-flex justify-content-center align-items-center">
@@ -136,13 +146,13 @@
           "
         >
           <h2 class="text-center" style="text-align: center">
-            <%if(netRating){%> <%=netRating%> <%}else{%> No Rating <%}%>
+          <%= netRating%>
           </h2>
         </div>
         <% if(place.reviews.length> 0) { %>
-        <div class="card my-2 col-5" style="min-height: 8em; margin: auto">
+        <div class="card my-2 col-5 <%= place.reviews[0].isOwner ? "green":"" %>" style="min-height: 8em; margin: auto">
           <div
-            class="card-body text-success d-flex flex-column my-0 justify-content-between"
+            class="card-body text-success d-flex flex-column my-0 justify-content-between "
           >
             <p
               style="
@@ -157,6 +167,7 @@
             </p>
             <div class="d-flex justify-content-between p-1">
               <p class="d-inline p-0"><%= place.reviews[0].rating %>★</p>
+              <%if(place.reviews[0].isOwner){%>
               <form
                 action="/listings/<%= place._id %>/reviews/<%= place.reviews[0]._id %>?_method=DELETE"
                 method="POST"
@@ -179,14 +190,15 @@
                   </svg>
                 </button>
               </form>
+              <%}%>
             </div>
           </div>
         </div>
         <% if (place.reviews.length> 0) { %> <% for (let i=1; i <
         place.reviews.length; i++) { %>
-        <div class="card my-2 col-5" style="min-height: 8em; margin: auto">
+        <div class="card my-2 col-5 <%= place.reviews[i].isOwner ? "green":"" %>" style="min-height: 8em; margin: auto ">
           <div
-            class="card-body text-success d-flex flex-column my-0 justify-content-between"
+            class="card-body text-success d-flex flex-column my-0 justify-content-between "
           >
             <p
               style="
@@ -201,6 +213,7 @@
             </p>
             <div class="d-flex justify-content-between p-1">
               <p class="d-inline p-0"><%= place.reviews[i].rating %>★</p>
+              <%if(place.reviews[i].isOwner){%>
               <form
                 action="/listings/<%= place._id %>/reviews/<%= place.reviews[i]._id %>?_method=DELETE"
                 method="POST"
@@ -223,6 +236,7 @@
                   </svg>
                 </button>
               </form>
+              <%}%>
             </div>
           </div>
         </div>
