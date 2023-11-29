@@ -9,9 +9,9 @@ const morgan = require("morgan");
 const session = require("express-session");
 const connectFlash = require("connect-flash");
 
-const listingRouter = require("./controllers/listingRoutes.js");
-const reviewRouter = require("./controllers/reviewRouter");
-const userRouter = require("./controllers/userRouter");
+const listingRouter = require("./routes/listingRoutes.js");
+const reviewRouter = require("./routes/reviewRouter");
+const userRouter = require("./routes/userRouter");
 const ExpressError = require("./utils/ExpressErrors.js");
 
 const sessionOptions = {
@@ -81,6 +81,7 @@ app.all("*", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log(err);
   let { statusCode = 500, message = "Some Error Occured" } = err;
   res.status(statusCode).render("error", { err });
 });

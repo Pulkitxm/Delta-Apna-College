@@ -38,7 +38,7 @@
     </div>
     <%}%>
     <div class="card-footer text-body-secondary">
-      <h4>Leave a Review</h4>
+      <h4>Please Leave a Review</h4>
       <%if(isLoggedin){%>
       <form
         action="/listings/<%=place._id%>/reviews"
@@ -46,65 +46,20 @@
         class="d-inline needs-validation"
         novalidate
       >
-        <div
-          class="btn-group"
-          role="group"
-          aria-label="Basic radio toggle button group"
-        >
-          <input
-            type="radio"
-            class="btn-check"
-            required
-            name="rating"
-            value="1"
-            id="btnradio1"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-success" for="btnradio1">&#9734;</label>
-          <input
-            type="radio"
-            class="btn-check"
-            required
-            name="rating"
-            value="2"
-            id="btnradio2"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-success" for="btnradio2">&#9734;</label>
-          <input
-            type="radio"
-            class="btn-check"
-            required
-            name="rating"
-            value="3"
-            id="btnradio3"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-success" for="btnradio3">&#9734;</label>
-          <input
-            type="radio"
-            class="btn-check"
-            required
-            name="rating"
-            value="4"
-            id="btnradio4"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-success" for="btnradio4">&#9734;</label>
-          <input
-            type="radio"
-            class="btn-check"
-            required
-            name="rating"
-            value="5"
-            id="btnradio5"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-success" for="btnradio5">&#9734;</label>
-          <div class="invalid-feedback">
-            Please Select a rating to submit the Review
-          </div>
-        </div>
+        <fieldset class="starability-heartbeat">
+        <legend>First rating:</legend>
+        <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+        <input type="radio" id="first-rate1" name="rating" value="1" />
+        <label for="first-rate1" title="Terrible">1 star</label>
+        <input type="radio" id="first-rate2" name="rating" value="2" />
+        <label for="first-rate2" title="Not good">2 stars</label>
+        <input type="radio" id="first-rate3" name="rating" value="3" />
+        <label for="first-rate3" title="Average">3 stars</label>
+        <input type="radio" id="first-rate4" name="rating" value="4" />
+        <label for="first-rate4" title="Very good">4 stars</label>
+        <input type="radio" id="first-rate5" name="rating" value="5" />
+        <label for="first-rate5" title="Amazing">5 stars</label>
+      </fieldset>
         <textarea
           class="form-control my-2"
           name="comment"
@@ -115,6 +70,7 @@
         <div class="invalid-feedback">Please Enter some Review</div>
         <button type="submit" class="btn btn-info m-1 mt-2 mb-3">Submit</button>
       </form>
+      
       <%}else{%>
       <h3 class="my-3" style="color: red">Login to leave a review</h3>
       <button
@@ -154,6 +110,7 @@
           <div
             class="card-body text-success d-flex flex-column my-0 justify-content-between "
           >
+          <h4 class="d-inline p-0 text-start text-dark">@<%= place.reviews[0].ownerName %></h4>
             <p
               style="
                 display: flex;
@@ -166,7 +123,11 @@
               <%= place.reviews[0].comment %>
             </p>
             <div class="d-flex justify-content-between p-1">
-              <p class="d-inline p-0"><%= place.reviews[0].rating %>★</p>
+              <p class="d-inline p-0">
+                <% for(let i=0; i<place.reviews[0].rating; i++){%>
+                  ★
+                <%}%>
+              </p>
               <%if(place.reviews[0].isOwner){%>
               <form
                 action="/listings/<%= place._id %>/reviews/<%= place.reviews[0]._id %>?_method=DELETE"
@@ -200,6 +161,7 @@
           <div
             class="card-body text-success d-flex flex-column my-0 justify-content-between "
           >
+            <h4 class="d-inline p-0 text-start text-dark">@<%= place.reviews[i].ownerName %></h4>
             <p
               style="
                 display: flex;
@@ -212,7 +174,11 @@
               <%= place.reviews[i].comment %>
             </p>
             <div class="d-flex justify-content-between p-1">
-              <p class="d-inline p-0"><%= place.reviews[i].rating %>★</p>
+              <p class="d-inline p-0">
+                <% for(let i=0; i<place.reviews[0].rating; i++){%>
+                  ★
+                <%}%>
+              </p>
               <%if(place.reviews[i].isOwner){%>
               <form
                 action="/listings/<%= place._id %>/reviews/<%= place.reviews[i]._id %>?_method=DELETE"
