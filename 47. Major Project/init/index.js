@@ -5,8 +5,8 @@ const User = require("../models/user");
 
 const main = async () => {
   await mongoose.connect(
-    // "mongodb+srv://pulkit:pp11223334@cluster0.nyotmfb.mongodb.net/?retryWrites=true&w=majority"
-    "mongodb://127.0.0.1:27017/wanderlust"
+    "mongodb+srv://pulkit:pp11223334@cluster0.nyotmfb.mongodb.net/?retryWrites=true&w=majority"
+    // "mongodb://127.0.0.1:27017/wanderlust"
   );
 };
 

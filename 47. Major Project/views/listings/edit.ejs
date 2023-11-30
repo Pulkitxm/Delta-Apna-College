@@ -2,7 +2,7 @@
 <body>
   <div class="container">
     <h2>Update <%=place.title%></h2>
-    <form action="/<%=place.id%>?_method=PATCH" method="POST" novalidate class="needs-validation">
+    <form action="/<%=place.id%>?_method=PATCH" method="POST" novalidate class="needs-validation" enctype="multipart/form-data" >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -36,15 +36,18 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" for="image">Image</label>
+        <image src="<%=originalImageUrl%>">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="image">Upload New Image</label>
         <input
           class="form-control"
-          type="text"
-          value="<%= place.image %>"
-          name="image"
+          type="file"
+          value="<%= place.image.url %>"
+          name="imageFile"
           id="image"
           placeholder="Enter image"
-          required
           />
           <div class="invalid-feedback">
             Invalid Image!

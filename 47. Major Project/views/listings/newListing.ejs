@@ -2,7 +2,7 @@
 <body>
   <div class="container">
     <h2>Add a new Listing</h2>
-    <form action="/" method="POST" novalidate class="needs-validation">
+    <form action="/" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -10,6 +10,7 @@
           type="text"
           name="title"
           id="title"
+          value="Cozy Beachfront Cottage"
           placeholder="Enter title"
           required
         />
@@ -21,6 +22,7 @@
           class="form-control"
           type="text"
           name="description"
+          value="Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach."
           id="description"
           placeholder="Enter description"
           required
@@ -29,11 +31,11 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" for="image">Image</label>
+        <label class="form-label" for="image">Upload Image</label>
         <input
           class="form-control"
-          type="text"
-          name="image"
+          type="file"
+          name="imageFile"
           id="image"
           placeholder="Enter image"
           required
@@ -48,6 +50,7 @@
             class="form-control"
             type="text"
             name="price"
+            value="1500"
             id="price"
             placeholder="Enter price"
             required
@@ -60,6 +63,7 @@
           <input
             class="form-control"
             type="text"
+            value="Malibu"
             name="location"
             id="location"
             placeholder="Enter location"
@@ -77,6 +81,7 @@
           name="country"
           id="country"
           placeholder="Enter country"
+          value="United States"
           required
         />
         <div class="invalid-feedback">Invalid Country!</div>

@@ -1,8 +1,15 @@
 const jwt = require("jsonwebtoken");
 const Listing = require("../models/listing");
 const User = require("../models/user");
+const geoCoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAP_TOKEN;
+const geocodingClient = geoCoding({ accessToken: mapBoxToken });
+
 require("dotenv").config();
-const {checkAndHanldeNotLoggedIn,checkIfAuthorized,} = require("../utils/module.js");
+const {
+  checkAndHanldeNotLoggedIn,
+  checkIfAuthorized,
+} = require("../utils/module.js");
 
 const index = async (req, res) => {
   const allListings = await Listing.find({});
@@ -24,6 +31,13 @@ const shwoListing = async (req, res) => {
     "reviews",
     "owner",
   ]);
+  let resp = await geocodingClient
+    .forwardGeocode({
+      query: listing.location,
+      limit: 2,
+    })
+    .send();
+  res.locals.coordinates = resp.body.features[0].geometry.coordinates
   if (res.locals.token) {
     const decodedToken = jwt.verify(res.locals.token, process.env.JWT_SECRET);
     const currUserId = decodedToken.id;
@@ -119,7 +133,12 @@ const shwoListing = async (req, res) => {
         }, 0) / netRating.length
       ).toFixed(1);
       if (!res.locals.netRating) res.locals.netRating = "No Ratings";
-      res.render("listings/place", { place: listing, netRating });
+
+      res.render("listings/place", {
+        place: listing,
+        netRating,
+        map_token: process.env.MAP_TOKEN,
+      });
     } else {
       res.render("listings/place", {
         place: listing,
@@ -132,12 +151,19 @@ const addListing = async (req, res, next) => {
   if (res.locals.token) {
     const decodedToken = jwt.verify(res.locals.token, process.env.JWT_SECRET);
     const currUserId = decodedToken.id;
-    const newListing = new Listing({ ...req.body, owner: currUserId });
+    const newListing = new Listing({
+      ...req.body,
+      owner: currUserId,
+      image: { url: req.file.path, filename: req.file.filename },
+    });
     await newListing
       .save()
       .then((response) => {
         console.log(response);
-        req.flash("success", `'${response.title}' Listing Created Successfully`);
+        req.flash(
+          "success",
+          `'${response.title}' Listing Created Successfully`
+        );
         res.redirect(`/${response._id}`);
       })
       .catch((err) => {
@@ -173,7 +199,14 @@ const editListing = async (req, res) => {
         await Listing.findById(req.params.id)
       )
     ) {
-      res.render("listings/edit", { place: listing });
+      let originalImageUrl = listing.image.url;
+      if (
+        originalImageUrl &&
+        originalImageUrl.indexOf("res.cloudinary.com") != -1
+      ) {
+        originalImageUrl = originalImageUrl.replace("upload/", "upload/w_300/");
+      }
+      res.render("listings/edit", { place: listing, originalImageUrl });
     } else {
       req.flash("error", `You are not authorized to edit this listing`);
       res.redirect(`/${req.params.id}`);
@@ -198,13 +231,19 @@ const updateListing = async (req, res) => {
       await Listing.findById(req.params.id)
     )
   ) {
-    await Listing.findByIdAndUpdate(req.params.id, { $set: req.body })
-      .then((res) => {
-        req.flash("success", `'${res.title}' Listing Updated Successfully`);
-      })
-      .catch((err) => {
-        req.flash("error", err);
+    console.log(req.body);
+    try {
+      const listing = await Listing.findByIdAndUpdate(req.params.id, {
+        $set: req.body,
       });
+      if (req.file) {
+        listing.image = { url: req.file.path, filename: req.file.filename };
+      }
+      await listing.save();
+      req.flash("success", `'${listing.title}' Listing Updated Successfully`);
+    } catch (err) {
+      req.flash("error", err.message);
+    }
   } else {
     req.flash("error", `You are not authorized to edit this listing`);
   }

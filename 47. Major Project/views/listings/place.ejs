@@ -1,219 +1,210 @@
 <% layout('./layouts/Boilerplate') %>
 
-<body>
-  <div class="card container my-3 p-3" style="width: 35rem">
-    <div class="card-header">
-      <h2><%= place.title %></h2>
-    </div>
-    <div class="img">
-      <img
-        src="<%=place.image%>"
-        class="card-img-top"
-        height="380px"
-        alt="..."
-      />
-    </div>
-    <div class="card-body">
-      <p class="card-text"><%= place.description %></p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Location: <%= place.location %></li>
-      <li class="list-group-item">Country: <%= place.country %></li>
-      <li class="list-group-item">
-        Price: ₹ <%= place.price.toLocaleString("en-In") %>
-      </li>
-    </ul>
-    <%if(isAuthorizedToEdit){%>
-    <div class="card-footer text-body-secondary d-flex justify-content-end">
-      <form action="/edit/<%=place._id%>" method="GET" style="display: inline">
-        <button class="btn btn-info m-1">Edit</button>
-      </form>
-      <form
-        action="/<%=place._id%>?_method=DELETE"
-        method="POST"
-        style="display: inline"
-      >
-        <button class="btn btn-danger m-1">Delete</button>
-      </form>
-    </div>
-    <%}%>
-    <div class="card-footer text-body-secondary">
-      <h4>Please Leave a Review</h4>
-      <%if(isLoggedin){%>
-      <form
-        action="/listings/<%=place._id%>/reviews"
-        method="POST"
-        class="d-inline needs-validation"
-        novalidate
-      >
-        <fieldset class="starability-heartbeat">
-        <legend>First rating:</legend>
-        <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
-        <input type="radio" id="first-rate1" name="rating" value="1" />
-        <label for="first-rate1" title="Terrible">1 star</label>
-        <input type="radio" id="first-rate2" name="rating" value="2" />
-        <label for="first-rate2" title="Not good">2 stars</label>
-        <input type="radio" id="first-rate3" name="rating" value="3" />
-        <label for="first-rate3" title="Average">3 stars</label>
-        <input type="radio" id="first-rate4" name="rating" value="4" />
-        <label for="first-rate4" title="Very good">4 stars</label>
-        <input type="radio" id="first-rate5" name="rating" value="5" />
-        <label for="first-rate5" title="Amazing">5 stars</label>
-      </fieldset>
-        <textarea
-          class="form-control my-2"
-          name="comment"
-          placeholder="Enter a review"
-          aria-label="Review"
-          required
-        ></textarea>
-        <div class="invalid-feedback">Please Enter some Review</div>
-        <button type="submit" class="btn btn-info m-1 mt-2 mb-3">Submit</button>
-      </form>
-      
-      <%}else{%>
-      <h3 class="my-3" style="color: red">Login to leave a review</h3>
-      <button
-        class="btn btn-primary m-2"
-        data-bs-target="#exampleModalToggle"
-        data-bs-toggle="modal"
-      >
-        Login
-      </button>
-      or
-      <button
-        class="btn btn-primary m-2"
-        data-bs-target="#exampleModalToggle2"
-        data-bs-toggle="modal"
-      >
-        Register
-      </button>
-      <%}%>
+  <body>
+    <div class="card container my-3 p-3" style="width: 35rem">
+      <div class="card-header">
+        <h2>
+          <%= place.title %>
+        </h2>
+      </div>
+      <div class="img">
+        <img src="<%=place.image.url%>" class="card-img-top" height="380px" alt="..." />
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <%= place.description %>
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Location: <%= place.location %>
+        </li>
+        <li class="list-group-item">Country: <%= place.country %>
+        </li>
+        <li class="list-group-item">
+          Price: ₹ <%= place.price.toLocaleString("en-In") %>
+        </li>
+      </ul>
+      <%if(isAuthorizedToEdit){%>
+        <div class="card-footer text-body-secondary d-flex justify-content-end">
+          <form action="/edit/<%=place._id%>" method="GET" style="display: inline">
+            <button class="btn btn-info m-1">Edit</button>
+          </form>
+          <form action="/<%=place._id%>?_method=DELETE" method="POST" style="display: inline">
+            <button class="btn btn-danger m-1">Delete</button>
+          </form>
+        </div>
+        <%}%>
+          <div class="card-footer text-body-secondary">
+            <h4>Please Leave a Review</h4>
+            <%if(isLoggedin){%>
+              <form action="/listings/<%=place._id%>/reviews" method="POST" class="d-inline needs-validation"
+                novalidate>
+                <fieldset class="starability-heartbeat">
+                  <legend>First rating:</legend>
+                  <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked
+                    aria-label="No rating." />
+                  <input type="radio" id="first-rate1" name="rating" value="1" />
+                  <label for="first-rate1" title="Terrible">1 star</label>
+                  <input type="radio" id="first-rate2" name="rating" value="2" />
+                  <label for="first-rate2" title="Not good">2 stars</label>
+                  <input type="radio" id="first-rate3" name="rating" value="3" />
+                  <label for="first-rate3" title="Average">3 stars</label>
+                  <input type="radio" id="first-rate4" name="rating" value="4" />
+                  <label for="first-rate4" title="Very good">4 stars</label>
+                  <input type="radio" id="first-rate5" name="rating" value="5" />
+                  <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+                <textarea class="form-control my-2" name="comment" placeholder="Enter a review" aria-label="Review"
+                  required></textarea>
+                <div class="invalid-feedback">Please Enter some Review</div>
+                <button type="submit" class="btn btn-info m-1 mt-2 mb-3">Submit</button>
+              </form>
 
-      <div class="row d-flex justify-content-center align-items-center">
-        <div
-          class="my-2 col-5"
-          style="
+              <%}else{%>
+                <h3 class="my-3" style="color: red">Login to leave a review</h3>
+                <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                  Login
+                </button>
+                or
+                <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
+                  Register
+                </button>
+                <%}%>
+
+                  <div class="row d-flex justify-content-center align-items-center">
+                    <div class="my-2 col-5" style="
             min-height: 8em;
             margin: auto;
             display: flex;
             justify-content: center;
             align-items: center;
-          "
-        >
-          <h2 class="text-center" style="text-align: center">
-          <%= netRating%>
-          </h2>
-        </div>
-        <% if(place.reviews.length> 0) { %>
-        <div class="card my-2 col-5 <%= place.reviews[0].isOwner ? "green":"" %>" style="min-height: 8em; margin: auto">
-          <div
-            class="card-body text-success d-flex flex-column my-0 justify-content-between "
-          >
-          <h4 class="d-inline p-0 text-start text-dark">@<%= place.reviews[0].ownerName %></h4>
-            <p
-              style="
+          ">
+                      <h2 class="text-center" style="text-align: center">
+                        <%= netRating%>
+                      </h2>
+                    </div>
+                    <% if(place.reviews.length> 0) { %>
+                      <div class="card my-2 col-5 <%= place.reviews[0].isOwner ? " green":"" %>" style="min-height: 8em;
+                        margin: auto">
+                        <div class="card-body text-success d-flex flex-column my-0 justify-content-between ">
+                          <h4 class="d-inline p-0 text-start text-dark">@<%= place.reviews[0].ownerName %>
+                          </h4>
+                          <p style="
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 align-self: center;
                 justify-self: center;
-              "
-            >
-              <%= place.reviews[0].comment %>
-            </p>
-            <div class="d-flex justify-content-between p-1">
-              <p class="d-inline p-0">
-                <% for(let i=0; i<place.reviews[0].rating; i++){%>
-                  ★
-                <%}%>
-              </p>
-              <%if(place.reviews[0].isOwner){%>
-              <form
-                action="/listings/<%= place._id %>/reviews/<%= place.reviews[0]._id %>?_method=DELETE"
-                method="POST"
-                style="display: inline"
-              >
-                <button class="d-inline deleteBtn">
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 24 24"
-                    height="30px"
-                    width="30px"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path fill="none" d="M0 0h24v24H0V0z"></path>
-                    <path
-                      d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"
-                    ></path>
-                  </svg>
-                </button>
-              </form>
-              <%}%>
-            </div>
-          </div>
-        </div>
-        <% if (place.reviews.length> 0) { %> <% for (let i=1; i <
-        place.reviews.length; i++) { %>
-        <div class="card my-2 col-5 <%= place.reviews[i].isOwner ? "green":"" %>" style="min-height: 8em; margin: auto ">
-          <div
-            class="card-body text-success d-flex flex-column my-0 justify-content-between "
-          >
-            <h4 class="d-inline p-0 text-start text-dark">@<%= place.reviews[i].ownerName %></h4>
-            <p
-              style="
+              ">
+                            <%= place.reviews[0].comment %>
+                          </p>
+                          <div class="d-flex justify-content-between p-1">
+                            <p class="d-inline p-0">
+                              <% for(let i=0; i<place.reviews[0].rating; i++){%>
+                                ★
+                                <%}%>
+                            </p>
+                            <%if(place.reviews[0].isOwner){%>
+                              <form
+                                action="/listings/<%= place._id %>/reviews/<%= place.reviews[0]._id %>?_method=DELETE"
+                                method="POST" style="display: inline">
+                                <button class="d-inline deleteBtn">
+                                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                    height="30px" width="30px">
+                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                    <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                    <path
+                                      d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z">
+                                    </path>
+                                  </svg>
+                                </button>
+                              </form>
+                              <%}%>
+                          </div>
+                        </div>
+                      </div>
+                      <% if (place.reviews.length> 0) { %> <% for (let i=1; i < place.reviews.length; i++) { %>
+                          <div class="card my-2 col-5 <%= place.reviews[i].isOwner ? " green":"" %>" style="min-height:
+                            8em; margin: auto ">
+                            <div class="card-body text-success d-flex flex-column my-0 justify-content-between ">
+                              <h4 class="d-inline p-0 text-start text-dark">@<%= place.reviews[i].ownerName %>
+                              </h4>
+                              <p style="
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 align-self: center;
                 justify-self: center;
-              "
-            >
-              <%= place.reviews[i].comment %>
-            </p>
-            <div class="d-flex justify-content-between p-1">
-              <p class="d-inline p-0">
-                <% for(let i=0; i<place.reviews[0].rating; i++){%>
-                  ★
-                <%}%>
-              </p>
-              <%if(place.reviews[i].isOwner){%>
-              <form
-                action="/listings/<%= place._id %>/reviews/<%= place.reviews[i]._id %>?_method=DELETE"
-                method="POST"
-                style="display: inline"
-              >
-                <button class="d-inline deleteBtn">
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 24 24"
-                    height="30px"
-                    width="30px"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path fill="none" d="M0 0h24v24H0V0z"></path>
-                    <path
-                      d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"
-                    ></path>
-                  </svg>
-                </button>
-              </form>
-              <%}%>
-            </div>
+              ">
+                                <%= place.reviews[i].comment %>
+                              </p>
+                              <div class="d-flex justify-content-between p-1">
+                                <p class="d-inline p-0">
+                                  <% for(let i=0; i<place.reviews[0].rating; i++){%>
+                                    ★
+                                    <%}%>
+                                </p>
+                                <%if(place.reviews[i].isOwner){%>
+                                  <form
+                                    action="/listings/<%= place._id %>/reviews/<%= place.reviews[i]._id %>?_method=DELETE"
+                                    method="POST" style="display: inline">
+                                    <button class="d-inline deleteBtn">
+                                      <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                        viewBox="0 0 24 24" height="30px" width="30px">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                        <path
+                                          d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z">
+                                        </path>
+                                      </svg>
+                                    </button>
+                                  </form>
+                                  <%}%>
+                              </div>
+                            </div>
+                          </div>
+                          <% } %>
+                            <% } else { %> Be the first one to review <% } %>
+                                <% if(place.reviews.length % 2===0) { %>
+                                  <div class="card my-2 col-5" style="min-height: 8em; margin: auto"></div>
+                                  <% } %>
+                                    <% } else { %> Be the first one to review <% } %>
+                  </div>
+                  <div class="row d-flex justify-content-center align-items-center text-center">
+                    <div id="map"></div>
+                  </div>
           </div>
-        </div>
-        <% } %> <% } else { %> Be the first one to review <% } %> <%
-        if(place.reviews.length % 2===0) { %>
-        <div
-          class="card my-2 col-5"
-          style="min-height: 8em; margin: auto"
-        ></div>
-        <% } %> <% } else { %> Be the first one to review <% } %>
-      </div>
     </div>
-  </div>
-</body>
+  </body>
+  <script>
+    const createMarker = () => {
+      const marker = document.createElement('div')
+      marker.className = 'marker'
+      marker.innerHTML = `
+    <svg fill="#000000" version="1.1" id="Capa_1" 
+        width="30px" height="30px" color='red' viewBox="0 0 547.596 547.596"
+        xml:space="preserve">
+      <g>
+        <path d="M540.76,254.788L294.506,38.216c-11.475-10.098-30.064-10.098-41.386,0L6.943,254.788
+          c-11.475,10.098-8.415,18.284,6.885,18.284h75.964v221.773c0,12.087,9.945,22.108,22.108,22.108h92.947V371.067
+          c0-12.087,9.945-22.108,22.109-22.108h93.865c12.239,0,22.108,9.792,22.108,22.108v145.886h92.947
+          c12.24,0,22.108-9.945,22.108-22.108v-221.85h75.965C549.021,272.995,552.081,264.886,540.76,254.788z"/>
+      </g>
+      </svg>`
+      console.log(marker);
+      return marker
+    }
+    let mapToken = "<%=process.env.Map_Token%>"
+    mapboxgl.accessToken = mapToken;
+    const map = new mapboxgl.Map({
+      // style:"mapbox://styles/mapbox/dark-v11",
+      container: 'map', // container ID
+      center: <%=JSON.stringify(coordinates) %>, // starting position [lng, lat]
+      zoom: 9 // starting zoom
+    });
+      new mapboxgl.Marker({ element: createMarker() })
+      .setLngLat(<%=JSON.stringify(coordinates) %>)
+      .setPopup(new mapboxgl.Popup({ offset: 25, className: 'my-class' }).setHTML("<element><p><%=place.location%></p><p style='color:red;'>-This is where you'll be</p></element>"))
+      .addTo(map);
+
+  </script>

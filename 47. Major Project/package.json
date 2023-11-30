@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/mapbox-sdk": "^0.15.3",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^1.41.0",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
@@ -23,6 +25,8 @@
     "jsonwebtoken": "^9.0.2",
     "method-override": "^3.0.0",
     "mongoose": "^7.5.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0"
   }
 }
