@@ -1,8 +1,111 @@
 <% layout('./layouts/Boilerplate') %>
+
+<% 
+    let optionsArr = [
+            {
+                img:"farms",
+                txt:"Farms",
+                class:"farms"
+            },
+            {
+                img:"omg!",
+                txt:"OMG!",
+                class:"omg"
+            },
+            {
+                img:"tiny-homes",
+                txt:"Tiny Homes",
+                class:"tinyhomes"
+            },
+            {
+                img:"surfing",
+                txt:"Surfing",
+                class:"surfing"
+            },
+            {
+                img:"amazing-pools",
+                txt:"Amazing pools",
+                class:"amazingpools"
+            },
+            {
+                img:"dammusi",
+                txt:"Dammusi",
+                class:"dammusi"
+            },
+            {
+                img:"yurts",
+                txt:"Yurts",
+                class:"yurts"
+            },
+            {
+                img:"cassas",
+                txt:"Casas particulares",
+                class:"cassas"
+            },
+            {
+                img:"windmills",
+                txt:"Windmills",
+                class:"windmills"
+            },
+            {
+                img:"dammusi",
+                txt:"Dammusi",
+                class:"dammusi"
+            },
+            {
+                img:"domes",
+                txt:"Domes",
+                class:"domes"
+            },
+            {
+                img:"desert",
+                txt:"Desert",
+                class:"desert"
+            },
+            {
+                img:"amazing",
+                txt:"Amazing views",
+                class:"amazing"
+            },
+            {
+                img:"cabins",
+                txt:"Cabins",
+                class:"cabins"
+            },
+            {
+                img:"luxe",
+                txt:"Luxe",
+                class:"luxe"
+            },
+            {
+                img:"kitchen",
+                txt:"Chef's kitchens",
+                class:"kitchen"
+            },
+            {
+                img:"caves",
+                txt:"Caves",
+                class:"caves"
+            },
+            {
+                img:"treehouse",
+                txt:"Treehouses",
+                class:"treehouse"
+            },
+            
+        ] 
+    %>
+
 <body>
   <div class="container">
     <h2>Add a new Listing</h2>
-    <form action="/" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
+    <form
+      action="/"
+      method="POST"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+    >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -30,17 +133,30 @@
         <div class="invalid-feedback">Invalid Description!</div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label" for="image">Upload Image</label>
-        <input
-          class="form-control"
-          type="file"
-          name="imageFile"
-          id="image"
-          placeholder="Enter image"
-          required
-        />
-        <div class="invalid-feedback">Invalid Image!</div>
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="image">Upload Image</label>
+          <input
+            class="form-control"
+            type="file"
+            name="imageFile"
+            id="image"
+            placeholder="Enter image"
+            required
+          />
+          <div class="invalid-feedback">Invalid Image!</div>
+        </div>
+
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="image">Cateogary</label>
+          <select class="form-select" aria-label="Default select example" name="cateogries">
+            <option value="null">Select an Option</option>
+            <% optionsArr.map((option,index)=>{%>
+            <option value="<%=option.class%>"><%=option.txt%></option>
+            <%})%>
+          </select>
+          <div class="invalid-feedback">Invalid Country!</div>
+        </div>
       </div>
 
       <div class="row">
@@ -71,20 +187,6 @@
           />
           <div class="invalid-feedback">Invalid Location!</div>
         </div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label" for="country">Country</label>
-        <input
-          class="form-control"
-          type="text"
-          name="country"
-          id="country"
-          placeholder="Enter country"
-          value="United States"
-          required
-        />
-        <div class="invalid-feedback">Invalid Country!</div>
       </div>
 
       <button class="btn btn-primary">Add</button>

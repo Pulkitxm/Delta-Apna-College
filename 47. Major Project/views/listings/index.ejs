@@ -1,7 +1,154 @@
 <% layout('./layouts/Boilerplate') %>
-
+<% 
+    let optionsArr = [
+            {
+                img:"farms",
+                txt:"Farms",
+                class:"farms"
+            },
+            {
+                img:"omg!",
+                txt:"OMG!",
+                class:"omg"
+            },
+            {
+                img:"tiny-homes",
+                txt:"Tiny Homes",
+                class:"tinyhomes"
+            },
+            {
+                img:"surfing",
+                txt:"Surfing",
+                class:"surfing"
+            },
+            {
+                img:"amazing-pools",
+                txt:"Amazing pools",
+                class:"amazingpools"
+            },
+            {
+                img:"dammusi",
+                txt:"Dammusi",
+                class:"dammusi"
+            },
+            {
+                img:"yurts",
+                txt:"Yurts",
+                class:"yurts"
+            },
+            {
+                img:"cassas",
+                txt:"Casas particulares",
+                class:"cassas"
+            },
+            {
+                img:"windmills",
+                txt:"Windmills",
+                class:"windmills"
+            },
+            {
+                img:"dammusi",
+                txt:"Dammusi",
+                class:"dammusi"
+            },
+            {
+                img:"domes",
+                txt:"Domes",
+                class:"domes"
+            },
+            {
+                img:"desert",
+                txt:"Desert",
+                class:"desert"
+            },
+            {
+                img:"amazing",
+                txt:"Amazing views",
+                class:"amazing"
+            },
+            {
+                img:"cabins",
+                txt:"Cabins",
+                class:"cabins"
+            },
+            {
+                img:"luxe",
+                txt:"Luxe",
+                class:"luxe"
+            },
+            {
+                img:"kitchen",
+                txt:"Chef's kitchens",
+                class:"kitchen"
+            },
+            {
+                img:"caves",
+                txt:"Caves",
+                class:"caves"
+            },
+            {
+                img:"treehouse",
+                txt:"Treehouses",
+                class:"treehouse"
+            },
+            
+        ] 
+    %>
     <body>
-        <h2 class="text-center">All Places</h2>
+        <div id="filters" class="filters">
+            <div class="options">
+                <%optionsArr.map((option,index)=>{%>
+                    <%if(cateogary==option.class){%>
+                        <div class="option" style="opacity: 1;" id="<%=option.class%>">
+                            <img src="assets/<%=option.img%>.png" style="opacity: 1;" alt="">
+                            <p style="opacity: 1;"><%=option.txt%></p>
+                            <div class="underline" style="opacity: 1;"></div>
+                    <%}else{%>
+                        <div class="option cateogary" id="<%=option.class%>" >
+                            <img src="assets/<%=option.img%>.png" alt="">
+                            <p><%=option.txt%></p>
+                            <div class="underline"></div>
+                    <%}%>
+                    </div>
+                <%})%>
+                <%optionsArr.map((option,index)=>{%>
+                    <%if(cateogary==option.class){%>
+                        <div class="option" style="opacity: 1;" id="<%=option.class%>">
+                            <img src="assets/<%=option.img%>.png" style="opacity: 1;" alt="">
+                            <p style="opacity: 1;"><%=option.txt%></p>
+                            <div class="underline" style="opacity: 1;"></div>
+                    <%}else{%>
+                        <div class="option cateogary" id="<%=option.class%>" >
+                            <img src="assets/<%=option.img%>.png" alt="">
+                            <p><%=option.txt%></p>
+                            <div class="underline"></div>
+                    <%}%>
+                    </div>
+                <%})%>
+            </div>
+            <div class="option-2" style="opacity: 1;" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter-square" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                    <path d="M6 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                </svg>
+                filters
+            </div>
+            <div class="option-3" style="opacity: 1; " id="taxContainer" >
+                <div class="form-check-reverse form-switch">
+                    <label class="form-check-label" for="taxSwitch">Display total taxes</label>
+                    <% if(showtaxes){%>
+                        <input class="form-check-input" type="checkbox" role="switch" id="taxSwitch" checked >
+                    <%}else{%>
+                        <input class="form-check-input" type="checkbox" role="switch" id="taxSwitch" >
+                    <%}%>
+                </div>
+            </div>
+        </div>
+        <%if(queryFoundLength){   %>
+            <div class="resultsFound" style="text-align: end;width:95vw;color:red">
+                About <%=queryFoundLength%> results
+            </div>
+        <%}%>
         <div class="listings-container">
             <% allListings.forEach(place=>{ %>
                 <a href="/<%=place._id%>" style="text-decoration: none;">
@@ -17,11 +164,11 @@
                             </p>
                             <%if(place.isOwner){%>
                                 <button class="btn btn-success">
-                                    <%}else{%>
-                                        <button class="btn btn-primary">
-                                            <%}%>
-                                                Explore
-                                        </button>
+                            <%}else{%>
+                                <button class="btn btn-primary">
+                            <%}%>
+                                Explore
+                                </button>
                         </div>
                     </div>
                 </a>

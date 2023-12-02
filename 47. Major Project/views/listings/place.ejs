@@ -16,6 +16,10 @@
         </p>
       </div>
       <ul class="list-group list-group-flush">
+        <li class="list-group-item">Cateogary: 
+        <% place.cateogries.map((cateogary)=>{ %>
+            <a style="text-decoration: none;" href="/?cateogary=<%=cateogary%>"><%=cateogary%></a>
+         <%}) %>
         <li class="list-group-item">Location: <%= place.location %>
         </li>
         <li class="list-group-item">Country: <%= place.country %>
@@ -191,7 +195,6 @@
           c12.24,0,22.108-9.945,22.108-22.108v-221.85h75.965C549.021,272.995,552.081,264.886,540.76,254.788z"/>
       </g>
       </svg>`
-      console.log(marker);
       return marker
     }
     let mapToken = "<%=process.env.Map_Token%>"

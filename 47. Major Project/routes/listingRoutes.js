@@ -24,5 +24,11 @@ listingRouter.get(
   "/addNew/new",
   wrapAsync(listingController.showAddListingForm)
 );
+// cateogary/farms/showataxes/null
+listingRouter.get(
+  "/cateogary/:cateogary",
+  wrapAsync(listingController.showCateogaryListing)
+);
+listingRouter.get("/showtaxes/:showtaxes", wrapAsync(listingController.showtaxes));
 
 module.exports = listingRouter;

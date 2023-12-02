@@ -16,6 +16,7 @@
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.0",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "ejs-mate": "^4.0.0",

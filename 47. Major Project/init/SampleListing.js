@@ -1234,6 +1234,26 @@ const reviews = [
     createdAt: "2021-03-30T15:30:00.000Z",
   },
 ];
+const cateogries = [
+  "farms",
+  "omg",
+  "tinyhomes",
+  "surfing",
+  "amazingpools",
+  "dammusi",
+  "yurts",
+  "cassas",
+  "windmills",
+  "dammusi",
+  "domes",
+  "desert",
+  "amazing",
+  "cabins",
+  "luxe",
+  "kitchen",
+  "caves",
+  "treehouse",
+];
 
 // let j = 0;
 // while (j < 28) {
@@ -1242,4 +1262,4 @@ const reviews = [
 // }
 // console.log(sampleListings);
 
-module.exports = { sampleListings,reviews };
+module.exports = { sampleListings,reviews,cateogries };

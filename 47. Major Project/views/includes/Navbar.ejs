@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg border-bottom sticky-top ">
-  <div class="container-fluid px-5" style="background-color: #fff;width: 100vw;">
+  <div class="container-fluid" style="background-color: #fff;width: 100vw;">
     <a class="navbar-brand d-flex justify-content-center align-items-center" href="/">
       <span class="material-symbols-outlined" style="color: red;transform: scale(1.5);">
         explore
@@ -10,27 +10,70 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mr-5 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/">Listings</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/addnew/new">Add</a>
+          <a class="nav-link" aria-current="page" href="/">Wanderlust</a>
         </li>
       </ul>
-      <% if(!isLoggedin){ %>
-        <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
-          Login
+      <div class="search" data-bs-toggle="modal" data-bs-target="#search">
+        <p>Anywhere</p>
+        <p style="opacity: .5;font-size: 1.4em;">|</p>
+        <p>Any Week</p>
+        <p style="opacity: .5;font-size: 1.4em;">|</p>
+        <div class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display:block;fill:none;height:12px;width:12px;stroke:currentColor;stroke-width:5.333333333333333;overflow:visible" aria-hidden="true" role="presentation" focusable="false"><path fill="none" d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"></path></svg>
+        </div>
+      </div>
+      <a class="nav-link" href="/addnew/new">
+      <div class="add">
+          Add Listing
+          &nbsp;
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+          </svg>
+        </div>
+      </a>
+      <div class="nav-item dropdown">
+        <button class="btn btn-light dropdown-toggle my-3" data-bs-toggle="dropdown" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle"
+            viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            <path fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+          </svg>
         </button>
-        or
-        <button class="btn btn-primary m-2" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
-          Register
-        </button>
-        <% }else{ %>
-          <button class="btn btn-danger m-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">
-            logout
+        <ul class="dropdown-menu dropdown-menu-light">
+          <% if(!isLoggedin){ %>
+        <li>
+          <button class="btn btn-primary dropdown-item" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+            Login
           </button>
-          <% } %>
+        </li>
+        <li>
+          <button class="btn btn-primary dropdown-item" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
+            Register
+          </button>
+        </li>
+        <% }else{ %>
+          <li>
+            <button class="btn btn-danger dropdown-item" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">
+              logout
+            </button>
+          </li>
+        <% } %>
+        <li>
+          <a class="dropdown-item" href="/">
+            Wanderlust Home
+          </a>
+        </li>
+        </ul>
+      </div>
     </div>
   </div>
   </div>

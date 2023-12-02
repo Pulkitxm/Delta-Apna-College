@@ -4,7 +4,6 @@ const User = require("../models/user");
 const geoCoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAP_TOKEN;
 const geocodingClient = geoCoding({ accessToken: mapBoxToken });
-
 require("dotenv").config();
 const {
   checkAndHanldeNotLoggedIn,
@@ -12,19 +11,108 @@ const {
 } = require("../utils/module.js");
 
 const index = async (req, res) => {
-  const allListings = await Listing.find({});
+  const query = req.query.query;
+  const cateogary = req.flash("cateogary")[0];
+  const showtaxes = req.flash("showtaxes")[0];
+  let allListings = await Listing.find({}).populate("owner");
+  if (cateogary) {
+    cateogarizedListings = allListings.filter((i) => {
+      for (item of i.cateogries) {
+        if (item == cateogary) return true;
+      }
+      return false;
+    });
+    if (cateogarizedListings.length > 0) allListings = cateogarizedListings;
+    else {
+      req.flash(
+        "error",
+        `No listings found for the cateogary '${req.query.cateogary}'`
+      );
+      res.redirect("/");
+      return;
+    }
+  }
+  if (showtaxes == "true" || showtaxes == true) {
+    const tax = process.env.tax;
+    allListings = allListings.map((i) => {
+      i.price = (i.price + (i.price * tax) / 100).toFixed(2);
+      return i;
+    });
+  }
+  if (!!query) {
+    allListings = allListings.filter((i, index) => {
+      let counter = false;
+      if (i.location.toLowerCase().indexOf(query.toLowerCase()) != -1){
+        counter = true;
+        // console.log("Common factor here for ",index+1,"the listing is i.location",i.location);
+      }
+      if (i.country.toLowerCase().indexOf(query.toLowerCase()) != -1){
+        counter = true;
+        // console.log("Common factor here for ",index+1,"the listing is i.country",i.country);
+      }
+      if (i.title.toLowerCase().indexOf(query.toLowerCase()) != -1){
+        counter = true;
+        // console.log("Common factor here for ",index+1,"the listing is i.title",i.title);
+      }
+      if (i.description.toLowerCase().indexOf(query.toLowerCase()) != -1) {
+        counter = true;
+        // console.log("Common factor here for ",index+1,"the listing is i.description",i.description);
+      }
+      if (i.owner.username.toLowerCase().indexOf(query.toLowerCase()) != -1) {
+        counter = true;
+        // console.log("Common factor here for ",index+1,"the listing is i.owner.username",i.owner.username);
+      }
+      i.cateogries.forEach((j) => { 
+        if (j.toLowerCase().indexOf(query.toLowerCase()) != -1) {
+          counter = true;
+          // console.log("Common factor here for ",index+1,"the listing is i.cateogries",i.cateogries);
+        };
+      })
+      return counter;
+    });
+    res.locals.queryFoundLength = allListings.length;
+  }
   if (res.locals.token) {
     const decodedToken = jwt.verify(res.locals.token, process.env.JWT_SECRET);
     const currUserId = decodedToken.id;
-    res.render("listings/index", {
-      allListings: allListings.map((i) => {
-        if (i.owner == currUserId) i["isOwner"] = true;
-        return i;
-      }),
-    });
+    if (allListings.length) {
+      console.log("allListings",allListings);
+      res.render("listings/index", {
+        allListings: allListings.map((i) => {
+          if (i.owner._id == currUserId) i["isOwner"] = true;
+          return i;
+        }),
+        cateogary: req.query.cateogary ? req.query.cateogary : "",
+        showtaxes,
+        cateogary,
+        queryFoundLength:res.locals.queryFoundLength,
+      });
+    } else {
+      req.flash("error", `No listings found`);
+      res.redirect("/");
+    }
   } else {
-    res.render("listings/index", { allListings });
+    if (allListings.length) {
+      res.render("listings/index", {
+        allListings,
+        cateogary: req.query.cateogary ? req.query.cateogary : "",
+        showtaxes,
+        cateogary,
+        queryFoundLength:res.locals.queryFoundLength,
+      });
+    } else {
+      req.flash("error", `No listings found`);
+      res.redirect("/");
+    }
   }
+};
+const showCateogaryListing = async (req, res) => {
+  req.flash("cateogary", req.params.cateogary);
+  res.redirect(`/`);
+};
+const showtaxes = async (req, res) => {
+  req.flash("showtaxes", true);
+  res.redirect(`/`);
 };
 const shwoListing = async (req, res) => {
   let listing = await Listing.findById(req.params.id).populate([
@@ -37,7 +125,7 @@ const shwoListing = async (req, res) => {
       limit: 2,
     })
     .send();
-  res.locals.coordinates = resp.body.features[0].geometry.coordinates
+  res.locals.coordinates = resp.body.features[0].geometry.coordinates;
   if (res.locals.token) {
     const decodedToken = jwt.verify(res.locals.token, process.env.JWT_SECRET);
     const currUserId = decodedToken.id;
@@ -77,6 +165,7 @@ const shwoListing = async (req, res) => {
       location: listing.location,
       country: listing.country,
       owner: listing.owner,
+      cateogries: listing.cateogries,
       reviews: reviewObj,
     };
   } else {
@@ -114,9 +203,9 @@ const shwoListing = async (req, res) => {
       country: listing.country,
       owner: listing.owner,
       reviews: reviewObj,
+      cateogries: listing.cateogries,
     };
   }
-
   res.locals.isAuthorizedToEdit = false;
   if (res.locals.token) {
     checkIfAuthorized(res.locals.token, res, listing);
@@ -133,7 +222,6 @@ const shwoListing = async (req, res) => {
         }, 0) / netRating.length
       ).toFixed(1);
       if (!res.locals.netRating) res.locals.netRating = "No Ratings";
-
       res.render("listings/place", {
         place: listing,
         netRating,
@@ -156,10 +244,11 @@ const addListing = async (req, res, next) => {
       owner: currUserId,
       image: { url: req.file.path, filename: req.file.filename },
     });
+    newListing.cateogries =
+      newListing.cateogries == "null" ? [] : newListing.cateogries;
     await newListing
       .save()
       .then((response) => {
-        console.log(response);
         req.flash(
           "success",
           `'${response.title}' Listing Created Successfully`
@@ -167,7 +256,6 @@ const addListing = async (req, res, next) => {
         res.redirect(`/${response._id}`);
       })
       .catch((err) => {
-        console.log(err);
         req.flash("error", err.message);
         res.redirect(`/`);
       });
@@ -231,7 +319,6 @@ const updateListing = async (req, res) => {
       await Listing.findById(req.params.id)
     )
   ) {
-    console.log(req.body);
     try {
       const listing = await Listing.findByIdAndUpdate(req.params.id, {
         $set: req.body,
@@ -303,4 +390,6 @@ module.exports = {
   updateListing,
   deleteListing,
   showAddListingForm,
+  showCateogaryListing,
+  showtaxes,
 };
