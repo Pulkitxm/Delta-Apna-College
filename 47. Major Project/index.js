@@ -7,6 +7,7 @@ const path = require("path");
 const method_override = require("method-override");
 const morgan = require("morgan");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const connectFlash = require("connect-flash");
 
 const listingRouter = require("./routes/listingRoutes.js");
@@ -14,7 +15,20 @@ const reviewRouter = require("./routes/reviewRouter");
 const userRouter = require("./routes/userRouter");
 const ExpressError = require("./utils/ExpressErrors.js");
 
+const store = MongoStore.create({
+  mongoUrl: process.env.MONGO_URI,
+  crypt: {
+    secret: process.env.sessionSecret,
+  },
+  touchAfter: 24 * 60 * 60 * 1000,
+});
+
+store.on("error", function (e) { 
+  console.log("Mongo Session Store Error", e);
+})
+
 const sessionOptions = {
+  store,
   secret: process.env.sessionSecret,
   resave: false,
   saveUninitialized: true,
