@@ -23,7 +23,7 @@ const store = MongoStore.create({
   touchAfter: 24 * 60 * 60 * 1000,
 });
 
-store.on("error", function (e) { 
+store.on("error", e=> { 
   console.log("Mongo Session Store Error", e);
 })
 

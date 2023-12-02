@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "18.17.1"
+  },
   "name": "47.-major-project",
   "version": "1.0.0",
   "description": "",
@@ -6,7 +9,8 @@
   "scripts": {
     "start": "node index.js",
     "devStart": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +32,7 @@
     "mongoose": "^7.5.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "multer-storage-cloudinary": "^4.0.0"
+    "multer-storage-cloudinary": "^4.0.0",
+    "vercel": "^32.6.1"
   }
 }
